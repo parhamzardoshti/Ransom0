@@ -1,4 +1,4 @@
-import os, platform, random, smtplib, ssl, socket, shutil, subprocess
+import os, platform, random, ssl, socket, shutil, subprocess
 from os import system, name
 from requests import get
 from datetime import datetime
